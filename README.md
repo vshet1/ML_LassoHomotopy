@@ -306,19 +306,64 @@ Testing with test_LassoHomotopy.py
 
 ## Answers to Questions
 
-1) What does the model you have implemented do and when should it be used?
-* The model implemented is a LASSO regularized regression model using the Homotopy Method. It should be used for linear regression problems where feature selection is crucial, especially when dealing with highly correlated features.
+### 1) What does the model you have implemented do and when should it be used?
+* The model implemented is a LASSO (Least Absolute Shrinkage and Selection Operator) regularized regression model using the Homotopy Method. This model is designed to handle linear regression problems where feature selection is crucial. It is particularly useful when dealing with datasets that have highly correlated features, as it can identify the most relevant features by setting others to zero.
+
+When to Use:
+
+* Feature Selection: Use LASSO when you need to select a subset of features from a large set of potential features.
+
+* Handling Collinearity: LASSO is effective in handling datasets with highly correlated features by reducing the impact of less important features.
+
+* Sparse Solutions: It provides sparse solutions, which can be beneficial for interpretability and reducing model complexity.
 
 
-2) How did you test your model to determine if it is working reasonably correctly?
-* The model was tested using cross-validation to find the optimal regularization parameter (alpha), comparing the Mean Squared Error (MSE) of training and test sets, and verifying its ability to handle highly collinear data by producing sparse solutions.
+### 2) How did you test your model to determine if it is working reasonably correctly?
 
-3) What parameters have you exposed to users of your implementation in order to tune performance?
-* The tunable parameters include alpha, max_iter, tol, and kcf. These parameters allow users to adjust the regularization strength, convergence criteria, and cross-validation folds.
+#### To test the model, several approaches were used:
 
-4) Are there specific inputs that your implementation has trouble with? Given more time, could you work around these or is it fundamental?
-* The model may struggle with extremely large datasets due to computational efficiency and highly collinear data due to stability issues. These challenges can be addressed by optimizing the model for larger datasets or preprocessing the data to reduce collinearity. Given more time, optimizations like parallel processing and advanced preprocessing techniques could be explored to mitigate these issues.
+* Cross-Validation: We used k-fold cross-validation to find the optimal regularization parameter (alpha) that minimizes the Mean Squared Error (MSE).
 
+* MSE Comparison: We compared the MSE of the training and test sets to evaluate the model's performance.
+
+* Highly Collinear Data: We tested the model with highly collinear data to verify that it produces a sparse solution.
+
+* Additionally, PyTest was used to ensure that the model's methods (like fit and predict) are working as expected.
+
+
+### 3) What parameters have you exposed to users of your implementation in order to tune performance?
+#### The following parameters are exposed to users for tuning performance:
+
+* alpha: The regularization parameter. A higher value of alpha leads to more coefficients being set to zero.
+
+* max_iter: The maximum number of iterations for the model to converge.
+
+* tol: The tolerance for convergence.
+
+* kcf: The number of folds for k-fold cross-validation.
+
+These parameters allow users to adjust the model's behavior based on their specific needs.
+
+
+### 4) Are there specific inputs that your implementation has trouble with? Given more time, could you work around these or is it fundamental?
+
+#### The LASSO model implemented here may struggle with certain types of inputs:
+
+* Extremely Large Datasets: While the model is designed to handle linear regression problems efficiently, extremely large datasets might pose computational efficiency issues. This is because the model iterates over the data multiple times during cross-validation and training. Given more time, optimizations such as parallel processing or distributed computing could be explored to mitigate this issue.
+
+* Extremely High Collinearity: Although LASSO is effective in handling collinear data by setting less important features to zero, extremely high collinearity might lead to unstable results. This is because the model's ability to distinguish between highly correlated features can be compromised. Techniques like PCA (Principal Component Analysis) could be used to reduce dimensionality and mitigate this issue.
+
+* Sparse Data: If the dataset is very sparse i.e. most features are zero for most samples, the model might not perform well due to the lack of information. This is not necessarily a limitation of the model itself but rather a characteristic of the data.
+
+#### Given more time, these challenges could be addressed by:
+
+* Optimizing Computational Efficiency: Implementing parallel processing or using more efficient algorithms could help handle large datasets.
+
+* Preprocessing Techniques: Using techniques like PCA or feature selection methods to reduce dimensionality and improve the model's stability with highly collinear data.
+
+* Data Augmentation: For sparse data, techniques like data augmentation or imputation could be explored to enhance the model's performance.
+
+* However, some limitations might be fundamental due to the nature of LASSO and the characteristics of the data itself. For example, if the data is inherently noisy or lacks sufficient information, no amount of optimization can fully overcome these issues.
 ---
 
 ## Contributors:
